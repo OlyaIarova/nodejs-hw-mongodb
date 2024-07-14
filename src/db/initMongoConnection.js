@@ -1,5 +1,5 @@
 import mongoose from "mongoose"; //бібліотека для роботи  з MongoDB
-import { env } from './utils/env.js'; //отримання значень змінних середовища
+import { env } from '../utils/env'; //отримання значень змінних середовища
 
 export const initMongoConnection = async () => {
   //oтримую значень змінних середовища
@@ -10,7 +10,7 @@ const db = env('MONGODB_DB');
   try {
     await mongoose.connect(
       //встановлюю з'єднання з MongoDB
-      `mongodb+srv://${user}:${pwd}@${url}/${db}?retryWrites=true&w=majority`,
+      `mongodb+srv://${user}:${pwd}@${url}/${db}?retryWrites=true&w=majority&appName=Cluster0`,
     );
     console.log('Mongo connection successfully established!'); //з'єднання встановлено успішно
   } catch (error) {

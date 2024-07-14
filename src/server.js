@@ -1,10 +1,11 @@
+
 import express from 'express';
 import pino from 'pino-http'; //для логування HTTP-запитів
-import cors from 'cors';//для налаштування політики CORS
-import { env } from './utils/env.js';//для роботи зі змінними середовища
-import { getAllContacts, getContactById } from './services/contacts.js';//для роботи з контактами
+import cors from 'cors'; //для налаштування політики CORS
+import { env } from './utils/env.js'; //для роботи зі змінними середовища
+import { getAllContacts, getContactById } from './services/contacts.js'; //для роботи з контактами
 
-const PORT = Number(env('PORT', '3000'));//номер порту зі змінної середовища PORT, або використовується порт 3000 за замовчуванням
+const PORT = Number(env('PORT', '3000')); //номер порту зі змінної середовища PORT, або використовується порт 3000 за замовчуванням
 
 export const setupServer = () => {
   const app = express();
@@ -17,12 +18,14 @@ export const setupServer = () => {
   app.get('/contacts', async (req, res) => {
     try {
       const contacts = await getAllContacts(); //отримання всіх контактів
-      res.status(200).json({//запит успішний
+      res.status(200).json({
+        //запит успішний
         status: 200,
         message: 'Successfully found contacts!',
         data: contacts,
       });
-    } catch (err) {//виникла помилка
+    } catch (err) {
+      //виникла помилка
       res.status(500).json({
         status: 500,
         message: 'Failed to fetch contacts',
@@ -36,19 +39,22 @@ export const setupServer = () => {
       const { contactId } = req.params; //отримання ID контакту з параметрів запиту
 
       const contact = await getContactById(contactId); //отримання контакту за його ID
-      if (!contact) { //якщо контакт не знайдено
+      if (!contact) {
+        //якщо контакт не знайдено
         return res.status(404).json({
           status: 404,
           message: `Contact with id ${contactId} not found`,
         });
       }
 
-      res.status(200).json({//запит успішний
+      res.status(200).json({
+        //запит успішний
         status: 200,
         message: `Successfully found contact with id ${contactId}!`,
         data: contact,
       });
-    } catch (err) {//виникла помилка
+    } catch (err) {
+      //виникла помилка
       res.status(500).json({
         status: 500,
         message: 'Failed to fetch contact',
@@ -57,20 +63,25 @@ export const setupServer = () => {
     }
   });
 
-  app.use('*', (req, res) => {//обробляю всі інші маршрути
-    res.status(404).json({// маршрут не знайдено
+  app.use('*', (req, res) => {
+    //обробляю всі інші маршрути
+    res.status(404).json({
+      // маршрут не знайдено
       message: 'Not found',
     });
   });
 
-  app.use((err, req, res) => {//глобальний обробник помилок
-    res.status(500).json({//повідомленням про помилку
+  app.use((err, req, res ) => {
+    //глобальний обробник помилок
+    res.status(500).json({
+      //повідомленням про помилку
       message: 'Something went wrong',
       error: err.message,
     });
   });
 
-  app.listen(PORT, () => {//запуск сервера на вказаному порту
+  app.listen(PORT, () => {
+    //запуск сервера на вказаному порту
     console.log(`Server is running on port ${PORT}`);
   });
 };
