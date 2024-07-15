@@ -1,4 +1,3 @@
-
 import express from 'express';
 import pino from 'pino-http'; //для логування HTTP-запитів
 import cors from 'cors'; //для налаштування політики CORS
