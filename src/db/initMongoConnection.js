@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { env } from '../utils/env';  //отримання значень змінних середовища
+import { env } from '../utils/env.js';  //отримання значень змінних середовища
 
  export const initMongoConnection = async () => {
    try {
