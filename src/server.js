@@ -2,8 +2,8 @@
 import express from 'express';
 import pino from 'pino-http'; //для логування HTTP-запитів
 import cors from 'cors'; //для налаштування політики CORS
-import { env } from './utils/env.js'; //для роботи зі змінними середовища
-import { getAllContacts, getContactById } from './services/contacts.js'; //для роботи з контактами
+import { env } from './utils/env'; //для роботи зі змінними середовища
+import { getAllContacts, getContactById } from './services/contacts'; //для роботи з контактами
 
 const PORT = Number(env('PORT', '3000')); //номер порту зі змінної середовища PORT, або використовується порт 3000 за замовчуванням
 

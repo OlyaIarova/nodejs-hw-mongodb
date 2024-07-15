@@ -8,5 +8,5 @@ export function env(name, defaultValue) {
   if (value) return value; //повертається, якщо значення змінної середовища знайдено
   if (defaultValue) return defaultValue; //повертається значення за замовчуванням, якщо значення змінної не знайдено
 
-  throw new Error(`Missing: process.env['${name}'].`); //викидається помилка, якщо значення змінної не знайдено і за замовчуванням нічого не вказано
+ throw new Error(`Missing: process.env['${name}'].`); //викидається помилка, якщо значення змінної не знайдено і за замовчуванням нічого не вказано
 }

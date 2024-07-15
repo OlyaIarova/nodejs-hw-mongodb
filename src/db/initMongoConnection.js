@@ -2,12 +2,13 @@ import mongoose from "mongoose"; //бібліотека для роботи  з 
 import { env } from '../utils/env'; //отримання значень змінних середовища
 
 export const initMongoConnection = async () => {
-  //oтримую значень змінних середовища
-const user = env('MONGODB_USER');
-const pwd = env('MONGODB_PASSWORD');
-const url = env('MONGODB_URL');
-const db = env('MONGODB_DB');
   try {
+    //oтримую значень змінних середовища
+    const user = env('MONGODB_USER');
+    const pwd = env('MONGODB_PASSWORD');
+    const url = env('MONGODB_URL');
+    const db = env('MONGODB_DB');
+    
     await mongoose.connect(
       //встановлюю з'єднання з MongoDB
       `mongodb+srv://${user}:${pwd}@${url}/${db}?retryWrites=true&w=majority&appName=Cluster0`,

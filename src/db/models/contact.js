@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 const contactSchema = new Schema( //Схема визначає структуру документів у колекції contacts
   {
@@ -21,6 +21,7 @@ const contactSchema = new Schema( //Схема визначає структур
       //Чи є контакт улюбленим, тип Boolean, за замовчуванням false
       type: Boolean,
       default: false,
+      required: true,
     },
     contactType: {
       //Тип контакту, тип String, обов'язкове поле з можливими значеннями 'work', 'home', 'personal'. Значення за замовчуванням — 'personal'
@@ -36,4 +37,4 @@ const contactSchema = new Schema( //Схема визначає структур
   },
 );
 
-export const Contact = model('contacts', contactSchema); //створюється на основі схеми contactSchema і зв'язується з колекцією contacts у MongoDB
+export const ContactsCollection = model('contacts', contactSchema); //створюється на основі схеми contactSchema і зв'язується з колекцією contacts у MongoDB
