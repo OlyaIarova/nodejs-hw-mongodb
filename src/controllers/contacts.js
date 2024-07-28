@@ -6,10 +6,19 @@ import {
   getContactById,
   updateContact,
 } from '../services/contacts.js';// сервіси для роботи з контактами
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
 
 // контролер для отримання всіх контактів
-export const getContactsController = async (_req, res ) => {
-  const contacts = await getAllContacts(); //викликається для отримання всіх контактів
+export const getContactsController = async (req, res ) => {
+ const { page, perPage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = parseSortParams(req.query);
+  const contacts = await getAllContacts({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+  }); //викликається для отримання всіх контактів
   res.status(200).json({ //відправляє відповідь з кодом 200
     status: 200,
     message: 'Successfully found contacts!',
@@ -54,20 +63,6 @@ export const createContactController = async (req, res, next) => {
   });
 };
 
-// контролер для видалення контакту за ідентифікатором
-export const deleteContactController = async (req, res, next) => {
-  const { contactId } = req.params;
-
-  const contact = await deleteContact(contactId);
-
-  if (!contact) {
-    next(createHttpError(404, 'Contact not found')); //відправляє 404 помилку, якщо контакт не знайдено
-    return;
-  }
-
-  res.status(204).send(); //відправляє відповідь без вмісту
-};
-
 // контролер для оновлення контакту за ідентифікатором
 export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
@@ -85,3 +80,18 @@ export const patchContactController = async (req, res, next) => {
     data: result.contact,
   });
 };
+
+// контролер для видалення контакту за ідентифікатором
+export const deleteContactController = async (req, res, next) => {
+  const { contactId } = req.params;
+
+  const contact = await deleteContact(contactId);
+
+  if (!contact) {
+    next(createHttpError(404, 'Contact not found')); //відправляє 404 помилку, якщо контакт не знайдено
+    return;
+  }
+
+  res.status(204).send(); //відправляє відповідь без вмісту
+};
+

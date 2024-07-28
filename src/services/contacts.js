@@ -1,9 +1,32 @@
-import { ContactsCollection } from '../db/models/contact.js';
+import { ContactsCollection } from '../db/models/contact.js';//модель для роботи з колекцією контактів у MongoDB
+import { SORT_ORDER } from '../index.js';//константа з порядком сортування 
+import { calculatePaginationData } from '../utils/calculatePaginationData.js';//для обчислення даних пагінації
+export const getAllContacts = async ({
+  //приймає об'єкт з параметрами пагінації та сортування
+  page = 1,
+  perPage = 10,
+  sortOrder = SORT_ORDER.ASC,
+  sortBy = '_id',
+}) => {
+  const limit = perPage; //кількість елементів на сторінку
+  const skip = (page - 1) * perPage; //кількість пропущених елементів
+  const contactsQuery = ContactsCollection.find(); //запит до колекції контактів
+  const contactsCount = await ContactsCollection.find() //загальна кількість документів у колекції
+    .merge(contactsQuery)
+    .countDocuments();
+  const contacts = await contactsQuery //виконує запит з пагінацією та сортуванням
+    .skip(skip)
+    .limit(limit)
+    .sort({ [sortBy]: sortOrder })
+    .exec();
 
-// отримання всіх контактів
-export const getAllContacts = async () => {
-  const contacts = await ContactsCollection.find(); //знаходить всі документи в колекції contacts
-  return contacts; //повертає масив об'єктів контактів
+  const paginationData = calculatePaginationData(contactsCount, perPage, page); //обчислює дані для пагінації
+
+  return {
+    //повертає об'єкт, що містить контакти та дані пагінації
+    data: contacts,
+    ...paginationData,
+  };
 };
 
 // отримання контакту за ідентифікатором
@@ -18,11 +41,13 @@ export const createContact = async (payload) => {
   return contact; //повертає створений об'єкт контакту
 };
 
-
 // оновлення контакту за ідентифікатором
 export const updateContact = async (contactId, payload, options = {}) => {
-  const rawResult = await ContactsCollection.findOneAndUpdate( {_id: contactId }, payload,
-    { new: true, includeResultMetadata: true,...options,},  );//знаходить і оновлює документ за його ідентифікатором
+  const rawResult = await ContactsCollection.findOneAndUpdate(
+    { _id: contactId },
+    payload,
+    { new: true, includeResultMetadata: true, ...options },
+  ); //знаходить і оновлює документ за його ідентифікатором
   if (!rawResult || !rawResult.value) return null; //якщо документ не знайдено або оновлення не відбулося, повертає null
   return {
     contact: rawResult.value, //повертає оновлений об'єкт контакту
@@ -32,7 +57,7 @@ export const updateContact = async (contactId, payload, options = {}) => {
 
 // видалення контакту за ідентифікатором
 export const deleteContact = async (contactId) => {
-  const contact = await ContactsCollection.findOneAndDelete({ _id: contactId,}); //знаходить і видаляє документ за його ідентифікатором
+  const contact = await ContactsCollection.findOneAndDelete({ _id: contactId }); //знаходить і видаляє документ за його ідентифікатором
   return contact; //повертає видалений об'єкт контакту або null, якщо контакт не знайдено
 };
 
