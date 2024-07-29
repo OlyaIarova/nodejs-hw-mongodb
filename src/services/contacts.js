@@ -1,6 +1,7 @@
 import { ContactsCollection } from '../db/models/contact.js';//модель для роботи з колекцією контактів у MongoDB
 import { SORT_ORDER } from '../index.js';//константа з порядком сортування 
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';//для обчислення даних пагінації
+
 export const getAllContacts = async ({
   //приймає об'єкт з параметрами пагінації та сортування
   page = 1,

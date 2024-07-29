@@ -10,8 +10,8 @@ import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 
 // контролер для отримання всіх контактів
-export const getContactsController = async (req, res ) => {
- const { page, perPage } = parsePaginationParams(req.query);
+export const getContactsController = async (req, res) => {
+  const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
   const contacts = await getAllContacts({
     page,
@@ -19,7 +19,8 @@ export const getContactsController = async (req, res ) => {
     sortBy,
     sortOrder,
   }); //викликається для отримання всіх контактів
-  res.status(200).json({ //відправляє відповідь з кодом 200
+  res.status(200).json({
+    //відправляє відповідь з кодом 200
     status: 200,
     message: 'Successfully found contacts!',
     data: contacts,

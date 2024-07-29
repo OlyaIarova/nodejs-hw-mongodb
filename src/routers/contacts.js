@@ -8,10 +8,7 @@ import {
   patchContactController,
 } from '../controllers/contacts.js';// імпортує контролери для обробки запитів
 import { validateBody } from '../middlewares/validateBody.js';// імпортує middleware для валідації тіла запиту
-import {
-  createContactSchema,
-  updateContactSchema,
-} from '../validation/contacts.js';// імпортує схеми валідації для контактів
+import {createContactSchema, updateContactSchema,} from '../validation/contacts.js';// імпортує схеми валідації для контактів
 import { isValidId } from '../middlewares/isValidId.js';// Імпортує middleware для перевірки валідності ID
 
 const router = Router();// створює новий маршрутизатор
