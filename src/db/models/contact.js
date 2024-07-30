@@ -21,7 +21,6 @@ const contactSchema = new Schema( //Схема визначає структур
       //Чи є контакт улюбленим, тип Boolean, за замовчуванням false
       type: Boolean,
       default: false,
-      required: true,
     },
     contactType: {
       //Тип контакту, тип String, обов'язкове поле з можливими значеннями 'work', 'home', 'personal'. Значення за замовчуванням — 'personal'
