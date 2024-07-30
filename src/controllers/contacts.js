@@ -8,17 +8,22 @@ import {
 } from '../services/contacts.js';// сервіси для роботи з контактами
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
+import { parseFilterParams } from '../utils/parseFilterParams.js';
 
 // контролер для отримання всіх контактів
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
+  const filter = parseFilterParams(req.query);
+  
   const contacts = await getAllContacts({
     page,
     perPage,
     sortBy,
     sortOrder,
+    filter,
   }); //викликається для отримання всіх контактів
+  
   res.status(200).json({
     //відправляє відповідь з кодом 200
     status: 200,
@@ -47,13 +52,14 @@ export const getContactByIdController = async (req, res, next) => {
 
 // контролер для створення нового контакту
 export const createContactController = async (req, res, next) => {
-  const { name, phoneNumber } = req.body; 
+  // const { name, phoneNumber } = req.body; 
 
-  if (!name || !phoneNumber) {//перевіряє, чи є name і phoneNumber у тілі запиту
-    next(createHttpError(400, 'Name and phoneNumber are required')); //відправляє 400 помилку, якщо дані не повні
-    return;
-  }
-  delete req.body._V; // видаляє потенційний зайвий атрибут з тіла запиту
+  // if (!name || !phoneNumber) {//перевіряє, чи є name і phoneNumber у тілі запиту
+  //   next(createHttpError(400, 'Name and phoneNumber are required')); //відправляє 400 помилку, якщо дані не повні
+  //   return;
+  // }
+  // delete req.body._V; // видаляє потенційний зайвий атрибут з тіла запиту
+ 
   const contact = await createContact(req.body);
 
   res.status(201).json({

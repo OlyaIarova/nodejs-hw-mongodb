@@ -12,7 +12,7 @@ export const createContactSchema = Joi.object({
   }),
   phoneNumber: Joi.string().min(3).max(20).required(), //має бути рядком, мінімальна довжина - 3 символи, максимальна - 20, є обов'язковим
   email: Joi.string().email(),//має бути рядком, значення email-адресою
-  isFavourite: Joi.boolean().required(),//має бути булевим значенням, поле є обов'язковим
+  isFavourite: Joi.boolean(),//має бути булевим значенням
   contactType: Joi.string().valid('work', 'home', 'personal').required(),//має бути рядком, допустимі значення: 'work', 'home', 'personal', є обов'язковим
 });
 // схема валідації для оновлення контакту

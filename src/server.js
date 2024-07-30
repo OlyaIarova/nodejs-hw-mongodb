@@ -1,6 +1,7 @@
 import express from 'express';//основний модуль для створення сервера
 import pino from 'pino-http'; //для логування HTTP-запитів
 import cors from 'cors'; //для налаштування політики CORS
+
 import { env } from './utils/env.js'; //для роботи зі змінними середовища
 import contactsRouter from './routers/contacts.js';//для обробки маршрутів, пов'язаних з контактами
 import { notFoundHandler } from './middlewares/notFoundHandler.js';//для обробки неіснуючих маршрутів

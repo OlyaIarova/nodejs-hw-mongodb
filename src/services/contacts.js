@@ -8,18 +8,39 @@ export const getAllContacts = async ({
   perPage = 10,
   sortOrder = SORT_ORDER.ASC,
   sortBy = '_id',
+  filter = {},
 }) => {
   const limit = perPage; //кількість елементів на сторінку
   const skip = (page - 1) * perPage; //кількість пропущених елементів
   const contactsQuery = ContactsCollection.find(); //запит до колекції контактів
-  const contactsCount = await ContactsCollection.find() //загальна кількість документів у колекції
-    .merge(contactsQuery)
-    .countDocuments();
-  const contacts = await contactsQuery //виконує запит з пагінацією та сортуванням
-    .skip(skip)
-    .limit(limit)
-    .sort({ [sortBy]: sortOrder })
-    .exec();
+
+  // Фільтрація по типу контакту
+  if (filter.contactType) {
+    contactsQuery.where('contactType').equals(filter.contactType);
+  }
+  // Фільтрація по улюблених контактах
+  if (filter.isFavourite) {
+    contactsQuery.where('isFavourite').equals(filter.isFavourite);
+  }
+
+  // const contactsCount = await ContactsCollection.find() //загальна кількість документів у колекції
+  //   .merge(contactsQuery)
+  //   .countDocuments();
+  // const contacts = await contactsQuery //виконує запит з пагінацією та сортуванням
+  //   .skip(skip)
+  //   .limit(limit)
+  //   .sort({ [sortBy]: sortOrder })
+  //   .exec();
+ 
+  //запити паралельно для отримання кількості контактів та самих контактів
+  const [contactsCount, contacts] = await Promise.all([
+    ContactsCollection.find().merge(contactsQuery).countDocuments(),
+    contactsQuery
+      .skip(skip)
+      .limit(limit)
+      .sort({ [sortBy]: sortOrder })
+      .exec(),
+  ]);
 
   const paginationData = calculatePaginationData(contactsCount, perPage, page); //обчислює дані для пагінації
 
