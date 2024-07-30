@@ -5,8 +5,7 @@ const bootstrap = async () => {
   await initMongoConnection(); // для встановлення з'єднання з MongoDB
   setupServer(); //для налаштування та запуску сервера
 };
-export const SORT_ORDER = {
-  //об'єкт, який визначає константи для сортування
+export const SORT_ORDER = {//об'єкт, який визначає константи для сортування
   ASC: 'asc', //зростання
   DESC: 'desc', //спадання
 };

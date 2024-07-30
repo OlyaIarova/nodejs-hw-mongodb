@@ -1,8 +1,7 @@
 import { HttpError } from 'http-errors'; //для перевірки типу помилки
 
 export const errorHandler = (error, req, res, next) => {//глобальна обробка помилок
-  if (error instanceof HttpError) {
-    //перевіряє, чи є помилка екземпляром HttpError
+  if (error instanceof HttpError) {//перевіряє, чи є помилка екземпляром HttpError
     res.status(error.status).json({
       status: error.status, //містить статус помилки
       message: error.name, //містить назву помилки

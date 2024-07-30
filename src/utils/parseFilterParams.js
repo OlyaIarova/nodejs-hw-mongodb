@@ -21,8 +21,7 @@ export const parseFilterParams = (query) => {//парсинг параметрі
   const parsedContactType = parseContactType(contactType);
   const parsedIsFavourite = parseIsFavourite(isFavourite);
 
-  return {
-    //повертає об'єкт, що містить розпарсені значення contactType та isFavourite.
+  return {//повертає об'єкт, що містить розпарсені значення contactType та isFavourite.
     contactType: parsedContactType,
     isFavourite: parsedIsFavourite,
   };

@@ -1,9 +1,8 @@
-import { ContactsCollection } from '../db/models/contact.js';//модель для роботи з колекцією контактів у MongoDB
-import { SORT_ORDER } from '../index.js';//константа з порядком сортування 
-import { calculatePaginationData } from '../utils/calculatePaginationData.js';//для обчислення даних пагінації
+import { ContactsCollection } from '../db/models/contact.js'; //модель для роботи з колекцією контактів у MongoDB
+import { SORT_ORDER } from '../index.js'; //константа з порядком сортування
+import { calculatePaginationData } from '../utils/calculatePaginationData.js'; //для обчислення даних пагінації
 
-export const getAllContacts = async ({
-  //приймає об'єкт з параметрами пагінації та сортування
+export const getAllContacts = async ({//приймає об'єкт з параметрами пагінації та сортування
   page = 1,
   perPage = 10,
   sortOrder = SORT_ORDER.ASC,
@@ -31,7 +30,7 @@ export const getAllContacts = async ({
   //   .limit(limit)
   //   .sort({ [sortBy]: sortOrder })
   //   .exec();
- 
+
   //запити паралельно для отримання кількості контактів та самих контактів
   const [contactsCount, contacts] = await Promise.all([
     ContactsCollection.find().merge(contactsQuery).countDocuments(),
@@ -44,8 +43,7 @@ export const getAllContacts = async ({
 
   const paginationData = calculatePaginationData(contactsCount, perPage, page); //обчислює дані для пагінації
 
-  return {
-    //повертає об'єкт, що містить контакти та дані пагінації
+  return {//повертає об'єкт, що містить контакти та дані пагінації
     data: contacts,
     ...paginationData,
   };

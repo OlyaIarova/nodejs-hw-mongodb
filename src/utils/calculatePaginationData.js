@@ -4,8 +4,7 @@ export const calculatePaginationData = (count, perPage, page) => {
   const hasNextPage = Boolean(totalPages - page); //перевірка наявності наступної сторінки
   const hasPreviousPage = page !== 1; //перевірка наявності попередньої сторінки
 
-  return {
-    //повернення об'єкта з даними пагінації
+  return {//повернення об'єкта з даними пагінації
     page, //номер поточної сторінки
     perPage, //кількість елементів на одну сторінку
     totalItems: count, //загальна кількість елементів
