@@ -13,10 +13,11 @@ import {
   updateContactSchema,
 } from '../validation/contacts.js'; // імпортує схеми валідації для контактів
 import { isValidId } from '../middlewares/isValidId.js'; // Імпортує middleware для перевірки валідності ID
+import { authenticate } from '../middlewares/authenticate.js';
 
 const router = Router(); // створює новий маршрутизатор
+router.use(authenticate);//використання middleware для аутентифікації
 
-// визначення маршрутів
 router.get('/', ctrlWrapper(getContactsController)); // маршрут для отримання всіх контактів
 
 router.get(

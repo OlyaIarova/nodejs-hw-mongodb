@@ -1,4 +1,4 @@
-import { SORT_ORDER } from '../index.js';
+import { SORT_ORDER } from '../constants/index.js';
 
 // функція для парсингу порядку сортування
 const parseSortOrder = (sortOrder) => {

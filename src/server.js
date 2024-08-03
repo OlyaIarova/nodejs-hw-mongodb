@@ -1,11 +1,12 @@
 import express from 'express'; //основний модуль для створення сервера
 import pino from 'pino-http'; //для логування HTTP-запитів
 import cors from 'cors'; //для налаштування політики CORS
+import cookieParser from 'cookie-parser';//для обробки cookie
 
 import { env } from './utils/env.js'; //для роботи зі змінними середовища
-import contactsRouter from './routers/contacts.js'; //для обробки маршрутів, пов'язаних з контактами
 import { notFoundHandler } from './middlewares/notFoundHandler.js'; //для обробки неіснуючих маршрутів
 import { errorHandler } from './middlewares/errorHandler.js'; //для глобальної обробки помилок
+import router from './routers/index.js';//основний маршрутизатор
 
 const PORT = Number(env('PORT', '3000')); //номер порту зі змінної середовища PORT, або використовується порт 3000 за замовчуванням
 
@@ -16,9 +17,11 @@ export const setupServer = () => {
 
   app.use(cors()); //для дозволу крос-доменних запитів
 
+  app.use(cookieParser()); //для обробки cookie
+
   app.use(pino({ transport: { target: 'pino-pretty' } })); //ля логування HTTP-запитів
 
-  app.use('/contacts', contactsRouter); //реєструє маршрутизатор
+  app.use(router); //реєструє маршрутизатор
 
   app.use(errorHandler); //для глобальної обробки помилок
 
