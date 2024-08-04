@@ -6,7 +6,7 @@ export const getAllContacts = async ({
   //приймає об'єкт з параметрами пагінації та сортування
   userId,
   page = 1,
-  perPage = 10у,
+  perPage = 10,
   sortOrder = SORT_ORDER.ASC,
   sortBy = '_id',
   filter = {},
@@ -50,8 +50,11 @@ export const getContactById = async (contactId, userId) => {
 };
 
 // створення нового контакту
-export const createContact = async (payload, userId) => {
-  const contact = await ContactsCollection.create({ ...payload, userId });
+export const createContact = async (payload) => {
+  const contact = await ContactsCollection.create({
+    ...payload,
+    userId: payload.userId,
+  });
   return contact; //повертає створений об'єкт контакт
 };
 
