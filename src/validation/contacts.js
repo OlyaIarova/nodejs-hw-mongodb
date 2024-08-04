@@ -14,7 +14,7 @@ export const createContactSchema = Joi.object({
   email: Joi.string().email(), //має бути рядком, значення email-адресою
   isFavourite: Joi.boolean(), //має бути булевим значенням
   contactType: Joi.string().valid('work', 'home', 'personal').required(), //має бути рядком, допустимі значення: 'work', 'home', 'personal', є обов'язковим
-  //userId: Joi.string(),
+  userId: Joi.string(),
 });
 // схема валідації для оновлення контакту
 export const updateContactSchema = Joi.object({

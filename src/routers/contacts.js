@@ -16,6 +16,7 @@ import { isValidId } from '../middlewares/isValidId.js'; // Імпортує mid
 import { authenticate } from '../middlewares/authenticate.js';
 
 const router = Router(); // створює новий маршрутизатор
+
 router.use(authenticate);//використання middleware для аутентифікації
 
 router.get('/', ctrlWrapper(getContactsController)); // маршрут для отримання всіх контактів

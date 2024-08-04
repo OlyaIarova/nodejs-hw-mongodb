@@ -2,27 +2,37 @@ import { model, Schema } from 'mongoose';
 
 const contactSchema = new Schema( //Схема визначає структуру документів у колекції contacts
   {
-    name: {//Ім'я контакту, тип String, обов'язкове поле
+    name: {
+      //Ім'я контакту, тип String, обов'язкове поле
       type: String,
       required: true,
     },
-    phoneNumber: {//Номер телефону контакту, тип String, обов'язкове поле
+    phoneNumber: {
+      //Номер телефону контакту, тип String, обов'язкове поле
       type: String,
       required: true,
     },
-    email: {//Електронна пошта контакту, тип String, необов'язкове поле
+    email: {
+      //Електронна пошта контакту, тип String, необов'язкове поле
       type: String,
       required: false,
     },
-    isFavourite: {//Чи є контакт улюбленим, тип Boolean, за замовчуванням false
+    isFavourite: {
+      //Чи є контакт улюбленим, тип Boolean, за замовчуванням false
       type: Boolean,
       default: false,
     },
-    contactType: {//Тип контакту, тип String, обов'язкове поле з можливими значеннями 'work', 'home', 'personal'. Значення за замовчуванням — 'personal'
+    contactType: {
+      //Тип контакту, тип String, обов'язкове поле з можливими значеннями 'work', 'home', 'personal'. Значення за замовчуванням — 'personal'
       type: String,
       required: true,
       default: 'personal',
       enum: ['work', 'home', 'personal'],
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'users',
+      required: true,
     },
   },
   {
