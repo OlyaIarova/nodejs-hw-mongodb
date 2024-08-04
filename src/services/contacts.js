@@ -55,6 +55,7 @@ export const createContact = async (payload) => {
     ...payload,
     userId: payload.userId,
   });
+  await contact.save();
   return contact; //повертає створений об'єкт контакт
 };
 
