@@ -38,7 +38,7 @@ export const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
   const userId = req.user._id;
 
-  const contact = await getContactById({ contactId, userId }); //для отримання контакту за ідентифікатором
+  const contact = await getContactById( contactId, userId ); //для отримання контакту за ідентифікатором
   if (!contact) {
     next(createHttpError(404, 'Contact not found')); //відправляє 404 помилку, якщо контакт не знайдено
     return;
@@ -54,13 +54,13 @@ export const getContactByIdController = async (req, res, next) => {
 // контролер для створення нового контакту
 export const createContactController = async (req, res, next) => {
   const { name, phoneNumber } = req.body;
+ 
   if (!name || !phoneNumber) {//перевіряє, чи є name і phoneNumber у тілі запиту
     next(createHttpError(400, 'Name and phoneNumber are required')); //відправляє 400 помилку, якщо дані не повні
     return;
   }
-  const userId = req.user._id;
   delete req.body._V; //видаляє потенційний зайвий атрибут з тіла запиту
-
+ const userId = req.user._id;
   const contact = await createContact({ ...req.body, userId });
 
   res.status(201).json({//створює новий контакт і повертає його з кодом 201
@@ -74,7 +74,7 @@ export const createContactController = async (req, res, next) => {
 export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const userId = req.user._id;
-  const result = await updateContact({ contactId, userId, payload: req.body }); //для оновлення контакту за ідентифікатором
+  const result = await updateContact(contactId, req.body, userId); //для оновлення контакту за ідентифікатором
 
   if (!result) {
     next(createHttpError(404, 'Contact not found')); //відправляє 404 помилку, якщо контакт не знайдено
@@ -93,7 +93,7 @@ export const deleteContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const userId = req.user._id;
 
-  const contact = await deleteContact({ contactId, userId });
+  const contact = await deleteContact( contactId, userId );
 
   if (!contact) {
     next(createHttpError(404, 'Contact not found')); //відправляє 404 помилку, якщо контакт не знайдено

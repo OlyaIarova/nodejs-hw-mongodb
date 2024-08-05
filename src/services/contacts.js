@@ -13,7 +13,7 @@ export const getAllContacts = async ({
 }) => {
   const limit = perPage; //кількість елементів на сторінку
   const skip = (page - 1) * perPage; //кількість пропущених елементів
-  const contactsQuery = ContactsCollection.find(userId); //запит до колекції контактів
+  const contactsQuery = ContactsCollection.find({ userId }); //запит до колекції контактів
 
   // Фільтрація по типу контакту
   if (filter.contactType) {
