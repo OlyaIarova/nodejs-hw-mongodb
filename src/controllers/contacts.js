@@ -116,8 +116,11 @@ export const patchContactController = async (req, res, next) => {
   //для оновлення контакту
   const result = await updateContact(
     contactId,
+    {
+      ...req.body,
+      photo: photoUrl,
+    },
     userId,
-     { ...req.body, photo: photoUrl, }
   );
 
   if (!result) {
