@@ -34,6 +34,7 @@ const contactSchema = new Schema( //Схема визначає структур
       ref: 'users',
       required: true,
     },
+    photo: { type: String },
   },
   {
     timestamps: true, //автоматично додає поля createdAt та updatedAt

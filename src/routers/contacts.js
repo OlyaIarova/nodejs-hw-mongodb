@@ -14,36 +14,44 @@ import {
 } from '../validation/contacts.js'; // імпортує схеми валідації для контактів
 import { isValidId } from '../middlewares/isValidId.js'; // Імпортує middleware для перевірки валідності ID
 import { authenticate } from '../middlewares/authenticate.js';
+import { upload } from '../middlewares/multer.js';
 
 const router = Router(); // створює новий маршрутизатор
 
-router.use(authenticate);//використання middleware для аутентифікації
+router.use(authenticate);// для аутентифікації
 
 router.get('/', ctrlWrapper(getContactsController)); // маршрут для отримання всіх контактів
 
-router.get(
+router.get(// маршрут для отримання контакту за ідентифікатором
   '/:contactId',
-  isValidId, //для перевірки валідності ID
-  ctrlWrapper(getContactByIdController), //для обробки контролера
-); // маршрут для отримання контакту за ідентифікатором
+  isValidId, 
+  ctrlWrapper(getContactByIdController),
+); 
 
 router.post(
+  // маршрут для створення нового контакту
   '/',
-  validateBody(createContactSchema), //для валідації тіла запиту
+  upload.single('photo'),
+  validateBody(createContactSchema),
   ctrlWrapper(createContactController),
-); // маршрут для створення нового контакту
+); 
 
 router.patch(
+  // маршрут для оновлення контакту за ідентифікатором
   '/:contactId',
-  isValidId, //для перевірки валідності ID
-  validateBody(updateContactSchema), //для валідації тіла запиту
-  ctrlWrapper(patchContactController), //для обробки контролера
-); // маршрут для оновлення контакту за ідентифікатором
+  upload.single('photo'),
+  isValidId,
+  validateBody(updateContactSchema),
+  ctrlWrapper(patchContactController),
+); 
 
-router.delete(
+router.delete(// маршрут для видалення контакту за ідентифікатором
   '/:contactId',
-  isValidId, //для перевірки валідності ID
-  ctrlWrapper(deleteContactController), //для обробки контролера
-); // маршрут для видалення контакту за ідентифікатором
+  isValidId,
+  ctrlWrapper(deleteContactController),
+); 
 
 export default router;
+
+
+//код визначає маршрути для операцій з контактами, включаючи створення, отримання, оновлення та видалення контактів

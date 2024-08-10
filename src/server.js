@@ -7,6 +7,7 @@ import { env } from './utils/env.js'; //для роботи зі змінним�
 import { notFoundHandler } from './middlewares/notFoundHandler.js'; //для обробки неіснуючих маршрутів
 import { errorHandler } from './middlewares/errorHandler.js'; //для глобальної обробки помилок
 import router from './routers/index.js';//основний маршрутизатор
+import { UPLOAD_DIR } from './constants/index.js';
 
 const PORT = Number(env('PORT', '3000')); //номер порту зі змінної середовища PORT, або використовується порт 3000 за замовчуванням
 
@@ -21,6 +22,8 @@ export const setupServer = () => {
 
   app.use(pino({ transport: { target: 'pino-pretty' } })); //ля логування HTTP-запитів
 
+  app.use('/uploads', express.static(UPLOAD_DIR));
+  
   app.use(router); //реєструє маршрутизатор
 
   app.use(errorHandler); //для глобальної обробки помилок

@@ -1,14 +1,15 @@
 import {
-  registerUser,
   loginUser,
   logoutUser,
+  registerUser,
   refreshUsersSession,
+  requestResetToken,
+  resetPassword,
 } from '../services/auth.js';//для обробки аутентифікації користувачів
 import { THIRTY_DAY } from '../constants/index.js';//константа, що визначає тривалість сесії у мілісекундах (30 днів)
 
 //Контролер реєстрації користувача
 export const registerUserController = async (req, res) => {
-  //для реєстрації нового користувача з даними з req.body
   const user = await registerUser(req.body);
 
   res.status(201).json({
@@ -20,7 +21,6 @@ export const registerUserController = async (req, res) => {
 
 //Контролер входу користувача
 export const loginUserController = async (req, res) => {
-  //для входу користувача з даними з req.body
   const session = await loginUser(req.body);
 
   res.cookie('refreshToken', session.refreshToken, {//встановлює cookies з терміном дії 30 днів.
@@ -43,8 +43,7 @@ export const loginUserController = async (req, res) => {
 
 //Контролер виходу користувача
 export const logoutUserController = async (req, res) => {
-  if (req.cookies.sessionId) {
-    //викликає logoutUser для завершення сесії
+  if (req.cookies.sessionId) {//для завершення сесії
     await logoutUser(req.cookies.sessionId);
   }
 
@@ -69,14 +68,13 @@ const setupSession = (res, session) => {
 //Контролер оновлення сесії користувача
 export const refreshUserSessionController = async (req, res) => {
   const session = await refreshUsersSession({
-    //для оновлення сесії з даними з cookies.
     sessionId: req.cookies.sessionId,
     refreshToken: req.cookies.refreshToken,
   });
 
   setupSession(res, session); //для налаштування нових cookies
 
-  res.status(200).json({//відповідь
+  res.status(200).json({
     status: 200,
     message: 'Successfully refreshed a session!',
     data: {
@@ -84,3 +82,29 @@ export const refreshUserSessionController = async (req, res) => {
     },
   });
 };
+
+// для запиту скидання паролю
+export const requestResetEmailController = async (req, res) => {
+  //генерує токен для скидання паролю і надсилає його на електронну пошту користувача
+  await requestResetToken(req.body.email);
+  res.json({
+    status: 200,
+    message: 'Reset password email was successfully sent!',
+    data: {},
+  });
+};
+
+//для скидання паролю користувача
+export const resetPasswordController = async (req, res) => {
+  //змінює пароль користувача у базі даних на новий
+  await resetPassword(req.body);
+  res.json({
+    status: 200,
+    message: 'Password was successfully reset!',
+    data: {},
+  });
+};
+
+
+
+//код відповідає за аутентифікацію користувачів у веб-додатку. Він реалізує кілька контролерів для роботи з користувачами, таких як реєстрація, вхід, вихід, оновлення сесії, а також запити на скидання паролю

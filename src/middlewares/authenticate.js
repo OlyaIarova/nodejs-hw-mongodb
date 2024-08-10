@@ -6,8 +6,7 @@ import { UsersCollection } from '../db/models/user.js';
 export const authenticate = async (req, res, next) => {
   const authHeader = req.get('Authorization'); //Отримання заголовка авторизації
 
-  if (!authHeader) {
-    //якщо заголовок відсутній, викликає помилку
+  if (!authHeader) {//якщо заголовок відсутній, викликає помилку
     next(createHttpError(401, 'Please provide Authorization header'));
     return;
   }
@@ -16,16 +15,14 @@ export const authenticate = async (req, res, next) => {
   const bearer = authHeader.split(' ')[0];
   const token = authHeader.split(' ')[1];
 
-  if (bearer !== 'Bearer' || !token) {
-    //якщо відсутній, викликає помилку 401 і завершує виконання
+  if (bearer !== 'Bearer' || !token) {//якщо відсутній, викликає помилку 401 і завершує виконання
     next(createHttpError(401, 'Auth header should be of type Bearer'));
     return;
   }
 
   const session = await SessionsCollection.findOne({ accessToken: token }); //шукає сесію в колекції sessions за токеном доступу
 
-  if (!session) {
-    //якщо сесія не знайдена, викликає помилку і завершує виконання
+  if (!session) {//якщо сесія не знайдена, викликає помилку і завершує виконання
     next(createHttpError(401, 'Session not found'));
     return;
   }
