@@ -25,8 +25,7 @@ const usersSchema = new Schema(
   },
 );
 
-usersSchema.methods.toJSON = function () {
-  //видаляє поле password з об'єкта користувача перед поверненням його як JSON
+usersSchema.methods.toJSON = function () { //видаляє поле password з об'єкта користувача перед поверненням його як JSON
   const obj = this.toObject();
   delete obj.password;
   return obj;

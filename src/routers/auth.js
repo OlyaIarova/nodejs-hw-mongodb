@@ -35,8 +35,7 @@ router.post('/logout', ctrlWrapper(logoutUserController));//створення �
 router.post('/refresh', ctrlWrapper(refreshUserSessionController));//створення маршруту для оновлення сесії користувача
 
 
-router.post(
-  //Маршрут для відправки електронного листа для скидання пароля
+router.post( //Маршрут для відправки електронного листа для скидання пароля
   '/send-reset-email',
   validateBody(requestResetEmailSchema),
   ctrlWrapper(requestResetEmailController),

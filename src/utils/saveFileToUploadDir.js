@@ -5,8 +5,7 @@ import { TEMP_UPLOAD_DIR, UPLOAD_DIR } from '../constants/index.js';
 import { env } from '../utils/env.js';
 
 export const saveFileToUploadDir = async (file) => {
-  await fs.rename(
-    //переміщуємо файл з тимчасової директорії в остаточну
+  await fs.rename(//переміщуємо файл з тимчасової директорії в остаточну
     path.join(TEMP_UPLOAD_DIR, file.filename),
     path.join(UPLOAD_DIR, file.filename),
   );

@@ -1,5 +1,5 @@
 import cloudinary  from 'cloudinary'; //для завантаження та обробки зображен
-//import fs from 'node:fs/promises'; //для роботи з файловою системою
+import fs from 'node:fs/promises'; //для роботи з файловою системою
 
 import { env } from './env.js'; 
 import { CLOUDINARY } from '../constants/index.js';
@@ -13,7 +13,7 @@ cloudinary.v2.config({
 
 export const saveFileToCloudinary = async (file) => {
   const response = await cloudinary.v2.uploader.upload(file.path); //завантаження файлу upload, повертає інформацію про завантажений файл
- // await fs.unlink(file.path); //видаляє локальний файл після завантаження
+  await fs.unlink(file.path); //видаляє локальний файл після завантаження
   return response.secure_url; //повертає захищений URL завантаженого файлу
 };
 

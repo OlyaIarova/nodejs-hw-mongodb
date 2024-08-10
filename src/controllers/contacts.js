@@ -75,14 +75,7 @@ export const createContactController = async (req, res, next) => {
      photoUrl = await saveFileToCloudinary(photo);
    }
 
-  // if (photo) {//Якщо додано фото, зберігає його або в Cloudinary, або в локальному каталозі
-  //   if (env('ENABLE_CLOUDINARY') === 'true') {
-  //     photoUrl = await saveFileToCloudinary(photo);
-  //   } else {
-  //     photoUrl = await saveFileToUploadDir(photo);
-  //   }
-  // }
-
+ 
   const contact = await createContact({//для створення контакту
     ...req.body,
     photo: photoUrl,

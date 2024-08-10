@@ -28,16 +28,14 @@ router.get(// маршрут для отримання контакту за і�
   ctrlWrapper(getContactByIdController),
 ); 
 
-router.post(
-  // маршрут для створення нового контакту
+router.post(// маршрут для створення нового контакту
   '/',
   upload.single('photo'),
   validateBody(createContactSchema),
   ctrlWrapper(createContactController),
 ); 
 
-router.patch(
-  // маршрут для оновлення контакту за ідентифікатором
+router.patch(// маршрут для оновлення контакту за ідентифікатором
   '/:contactId',
   upload.single('photo'),
   isValidId,
