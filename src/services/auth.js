@@ -6,16 +6,21 @@ import path from 'node:path'; // надає утиліти
 import fs from 'node:fs/promises';//надає проміси
 import createHttpError from 'http-errors';//для створення HTTP-помилок
 
-import { UsersCollection } from '../db/models/user.js';
+import { UsersCollection } from '../db/models/user.js';//колекція користувачів у базі даних
 import {
   FIFTEEN_MINUTES,
   THIRTY_DAY,
   SMTP,
   TEMPLATES_DIR,
 } from '../constants/index.js';
-import { SessionsCollection } from '../db/models/session.js';
-import { env } from '../utils/env.js';
-import { sendEmail } from '../utils/sendMail.js';
+import { SessionsCollection } from '../db/models/session.js';//колекція сесій у базі даних
+import { env } from '../utils/env.js';// модуль для доступу до змінних середовища
+import { sendEmail } from '../utils/sendMail.js';//утиліта для надсилання електронних листів
+import {
+  getFullNameFromGoogleTokenPayload,
+  validateCode,
+} from '../utils/googleOAuth2.js';//утиліти для роботи з Google OAuth 2.0
+
 
 //Реєстрація користувача
 export const registerUser = async (payload) => {//перевіряється, чи існує користувач з вказаною електронною адресою
@@ -154,7 +159,7 @@ export const resetPassword = async (payload) => {
     if (err instanceof Error) throw createHttpError(401, err.message);
     throw err;
   }
-  console.log(entries);
+  // console.log(entries);
   const user = await UsersCollection.findOne({//Перевіряє валідність токена для скидання пароля
     email: entries.email,
     _id: entries.sub,
@@ -171,5 +176,30 @@ export const resetPassword = async (payload) => {
     { password: encryptedPassword },
   );
 };
+//вхід або реєстрація через Google
+export const loginOrSignupWithGoogle = async (code) => {
+  const loginTicket = await validateCode(code); //Валідація коду автентифікації, перевіряє код автентифікації, отриманий від Google після успішного входу користувача через Google OAuth
+  const payload = loginTicket.getPayload(); //Отримання інформації з токена, витягує корисне навантаження (payload) з автентифікаційного квитка (loginTicket), що містить інформацію про користувача
+  if (payload === 'undefined') throw createHttpError(401);
 
-// код забезпечує основні функції для роботи з користувачами, їх сесіями та скиданням паролів у веб-додатку
+  let user = await UsersCollection.findOne({ email: payload.email }); //Перевірка наявності користувача в базі даних
+  if (!user) {//Реєстрація нового користувача, якщо його не існує
+    const password = await bcrypt.hash(randomBytes(10), 10); //для створення випадкового пароля
+    user = await UsersCollection.create({
+      email: payload.email,
+      name: getFullNameFromGoogleTokenPayload(payload),
+      password,
+      role: 'parent',
+    });
+  }
+
+  const newSession = createSession(); //Створення нової сесії
+
+  return await SessionsCollection.create({
+    userId: user._id, //сесія прив'язується до конкретного користувача через його унікальний ідентифікатор (user._id)
+    ...newSession,
+  });
+};
+
+
+//код забезпечує функціонал реєстрації, автентифікації, управління сесіями, скидання паролів і входу через Google у веб-додатку

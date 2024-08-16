@@ -5,8 +5,10 @@ import {
   refreshUsersSession,
   requestResetToken,
   resetPassword,
+  loginOrSignupWithGoogle,
 } from '../services/auth.js';//для обробки аутентифікації користувачів
 import { THIRTY_DAY } from '../constants/index.js';//константа, що визначає тривалість сесії у мілісекундах (30 днів)
+import { generateAuthUrl } from '../utils/googleOAuth2.js';
 
 //Контролер реєстрації користувача
 export const registerUserController = async (req, res) => {
@@ -105,6 +107,31 @@ export const resetPasswordController = async (req, res) => {
   });
 };
 
+//надання клієнту URL для авторизації через Google OAuth 2.0
+export const getGoogleOAuthUrlController = async (req, res) => {
+  const url = generateAuthUrl(); //генерує URL для авторизації користувача через Google OAuth 2.0., URL використовується для перенаправлення користувача на сторінку авторизації Google, де він може дозволити доступ до свого профілю та інших даних
+  console.log(url);
+  res.json({
+    status: 200,
+    message: 'Successfully get Google OAuth url!',
+    data: {//повертається сам URL для подальшого використання на фронтенді
+      url,
+    },
+  });
+};
 
+//вхід користувача за допомогою Google OAuth 2.0 та створює нову сесію для користувача
+export const loginWithGoogleController = async (req, res) => {
+  const session = await loginOrSignupWithGoogle(req.body.code); //отримує код, який був переданий клієнтом після того, як користувач успішно авторизувався через Google та обробляє його
+  setupSession(res, session); //налаштовує сесію для користувача
 
-//код відповідає за аутентифікацію користувачів у веб-додатку. Він реалізує кілька контролерів для роботи з користувачами, таких як реєстрація, вхід, вихід, оновлення сесії, а також запити на скидання паролю
+  res.json({
+    status: 200,
+    message: 'Successfully logged in via Google OAuth!',
+    data: {
+      accessToken: session.accessToken,
+    },
+  });
+};
+
+//код відповідає за аутентифікацію користувачів у веб-додатку. Він реалізує кілька контролерів для роботи з користувачами, таких як реєстрація, вхід, вихід, оновлення сесії, а також запити на скидання паролю. 

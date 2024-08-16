@@ -1,0 +1,41 @@
+tags:
+  - Auth
+summary: Register a new user
+operationId: registerUser
+description: 'Create new user'
+security:
+  - bearerAuth: []
+requestBody:
+  description: User registration data
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: 'Olya Iarova'
+            description: "User's name"
+          email:
+            type: string
+            format: email
+            uniqueItems: true
+            example: 'OlyaIarova@gmail.com'
+            description: "User's email address"
+          password:
+            type: string
+            example: 'password123'
+            description: "User's password"
+responses:
+  '201':
+    description: Successfully registered a user
+    content:
+      application/json:
+        schema:
+          $ref: ..\..\components\schemas\auth.yaml
+  '400':
+    description: Bad request
+  '409':
+    description: Email in use
+  

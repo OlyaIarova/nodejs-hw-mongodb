@@ -1,0 +1,25 @@
+type: object
+required:
+  - userId
+  - accessToken
+  - refreshToken
+  - accessTokenValidUntil
+  - refreshTokenValidUntil
+properties:
+  userId:
+    type: string
+    example: 66adf92844188dd5507f9961
+    description: 'User id'
+  accessToken:
+    type: string
+    description: 'Access token'    
+  refreshToken:
+    type: string
+    description: 'Refresh token'
+  accessTokenValidUntil:
+    type: string
+    description: 'Access token valid until'
+  refreshTokenValidUntil:
+    type: string
+    description: 'Refresh token valid until'
+ 

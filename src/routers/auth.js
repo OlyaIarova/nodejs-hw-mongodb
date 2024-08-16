@@ -5,6 +5,7 @@ import {
   registerUserSchema,
   requestResetEmailSchema,
   resetPasswordSchema,
+  loginWithGoogleOAuthSchema,
 } from '../validation/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import {
@@ -14,6 +15,8 @@ import {
   registerUserController,
   requestResetEmailController,
   resetPasswordController,
+  getGoogleOAuthUrlController,
+  loginWithGoogleController,
 } from '../controllers/auth.js';
 
 const router = Router(); //Створення маршрутизатора
@@ -47,10 +50,18 @@ router.post(//Маршрут для скидання пароля
   ctrlWrapper(resetPasswordController),
 );
 
+router.get('/get-oauth-url', ctrlWrapper(getGoogleOAuthUrlController));//Маршрут для отримання URL для Google OAuth
+
+//Маршрут для входу або реєстрації через Google OAuth
+router.post(
+  '/confirm-oauth',
+  validateBody(loginWithGoogleOAuthSchema),
+  ctrlWrapper(loginWithGoogleController),
+);
 
 export default router;
 
 
 
 
-//код створює маршрутизацію для обробки запитів, пов'язаних із процесом аутентифікації користувачів
+//Цей маршрутизатор забезпечує організовану структуру для роботи з авторизацією та аутентифікацією в додатку, забезпечуючи обробку запитів для реєстрації, входу, скидання пароля, а також інтеграцію з Google OAuth

@@ -1,0 +1,73 @@
+tags:
+  - Contacts
+summary: Update contact
+operationId: updateContact
+description: 'Update a contact by ID'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    description: The ID of the contact to update
+    schema:
+      type: string
+      example: '65ca67e7ae7f10c88b598384'
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: 'Olya Iarova'
+            description: "Contact's name"
+          phoneNumber:
+            type: string
+            example: '+380000000111'
+            description: "Contact's phone number"
+          email:
+            type: string
+            example: 'OlyaIarova@gmail.com'
+            description: "Contact's email"
+          isFavourite:
+            type: boolean
+            default: false
+            example: false
+            description: 'Shows if the contact is marked as a favorite'
+          contactType:
+            type: string
+            enum: ['work', 'home', 'personal']
+            default: 'personal'
+            example: 'home'
+            description: Filter contacts by type. Default value - personal
+          photo:
+            type: string
+            format: binary
+            description: "Contact's photo"
+responses:
+  '200':
+    description: Successfully updated the contact!
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully updated the contact!
+            data:
+              type: object
+              $ref: ..\..\..\components\schemas\contact.yaml
+  '401':
+    $ref: ..\..\..\components\responses\401.yaml
+  '404':
+    $ref: ..\..\..\components\responses\404.yaml

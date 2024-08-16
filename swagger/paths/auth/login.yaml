@@ -1,0 +1,60 @@
+tags:
+  - Auth
+summary: Login a user
+operationId: loginUser
+description: 'Authenticate user and provide session tokens'
+security:
+  - bearerAuth: []
+requestBody:
+  description: User login credentials
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          email:
+            type: string
+            format: email
+            example: 'OlyaIarova@gmail.com'
+            description: "User's email"
+          password:
+            type: string
+            format: password
+            example: 'password123'
+            description: "User's password"
+        required:
+          - email
+          - password
+responses:
+  '200':
+    description: Successfully login a user!
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully logged in an user!
+            data:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  example: 'v9/IYvnLBeDeNIWgEKVmdmxHE+jtk2NGMng/9g3m'
+              required:
+               - accessToken
+  '400':
+    description: Bad request
+  '401':
+    $ref: ..\..\components\responses\401.yaml
+  '404':
+    $ref: ..\..\components\responses\404.yaml
