@@ -31,7 +31,6 @@ properties:
     description: 'ID user, that owner of contact' 
   email:
     type: string
-    default: 'user@gmail.com'
     example: 'OlyaIarova@gmail.com'
     description: "Contact's email"
   isFavourite:

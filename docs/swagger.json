@@ -14,7 +14,7 @@
       "url": "http://localhost:3000"
     },
     {
-      "url": "https://swagger-contacts.onrender.com"
+      "url": "https://nodejs-hw-mongodb-6-g0wd.onrender.com"
     }
   ],
   "tags": [
@@ -700,7 +700,6 @@
                 "required": [
                   "name",
                   "phoneNumber",
-                  "email",
                   "contactType"
                 ],
                 "properties": {
@@ -1083,7 +1082,6 @@
           },
           "email": {
             "type": "string",
-            "default": "user@gmail.com",
             "example": "OlyaIarova@gmail.com",
             "description": "Contact's email"
           },
