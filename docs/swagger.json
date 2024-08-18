@@ -11,9 +11,6 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000"
-    },
-    {
       "url": "https://nodejs-hw-mongodb-6-g0wd.onrender.com"
     }
   ],
@@ -1029,7 +1026,8 @@
           "photo": {
             "type": "string",
             "example": "binary",
-            "description": "Link to the contact's photo"
+            "description": "Link to the contact's photo",
+            "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
           },
           "createdAt": {
             "type": "string",
