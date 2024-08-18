@@ -5,7 +5,6 @@ required:
   - phoneNumber
   - contactType
   - userId
-  - email
 properties:
   _id:
     type: string

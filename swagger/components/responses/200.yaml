@@ -31,8 +31,17 @@ content:
             perPage:
               type: integer
               example: 10
+            totalItems:
+              type: integer
+              example: 10
             totalPages:
               type: integer
               example: 10
+            hasNextPage:
+              type: boolean
+              example: false
+            hasPreviousPage:
+              type: boolean
+              example: true
 
                 

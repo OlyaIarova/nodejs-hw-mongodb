@@ -52,54 +52,6 @@ parameters:
       example: 'Olya Iarova'
 responses:
   '200':
-    description: Successfully found contacts!
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - status
-            - message
-            - data
-          properties:
-            status:
-              type: integer
-              example: 200
-            message:
-              type: string
-              example: Successfully found contacts!
-            data:
-              type: object
-              required:
-                - data
-                - page
-                - perPage
-                - totalItems
-                - totalPages
-                - hasNextPage
-                - hasPreviousPage
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: ..\..\components\schemas\contact.yaml
-                page:
-                  type: number
-                  example: 2
-                perPage:
-                  type: number
-                  example: 4
-                totalItems:
-                  type: number
-                  example: 4
-                totalPages:
-                  type: number
-                  example: 4
-                hasNextPage:
-                  type: boolean
-                  example: false
-                hasPreviousPage:
-                  type: boolean
-                  example: true
-  '404':
-    $ref: ..\..\components\responses\404.yaml
+     $ref: ..\..\components\responses\200.yaml
+  '401':
+    $ref: ..\..\components\responses\401.yaml
